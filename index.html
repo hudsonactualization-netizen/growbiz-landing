@@ -1,32 +1,392 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>GrowBiz</title>
-</head>
-<body style="font-family:system-ui;max-width:720px;margin:40px auto;padding:0 16px;">
-  <h1>GrowBiz</h1>
-  <p>GrowBiz helps businesses operate smarter and grow digitally without technical headaches.</p>
+  <title>GrowBiz — Operate Smarter. Grow Digitally.</title>
+  <meta name="description" content="GrowBiz helps businesses operate smarter and grow digitally without technical headaches." />
+  <meta property="og:title" content="GrowBiz" />
+  <meta property="og:description" content="Operate smarter. Grow digitally. No technical headaches." />
+  <meta name="theme-color" content="#0B0F1A" />
 
-  <p><a id="openBtn" href="#" style="display:inline-block;padding:14px 18px;border:1px solid #111;border-radius:12px;text-decoration:none;font-weight:700;">
-    Open GrowBiz App
-  </a></p>
-  <p id="status" style="opacity:.75;">Fetching live link…</p>
+  <style>
+    :root{
+      --bg:#060812;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.08);
+      --border: rgba(255,255,255,.12);
+      --text:#EAF0FF;
+      --muted: rgba(234,240,255,.72);
+      --muted2: rgba(234,240,255,.56);
+      --brand:#7C5CFF;
+      --brand2:#2DE2E6;
+      --ok:#2ECC71;
+      --warn:#F5C542;
+      --bad:#FF4D6D;
+      --shadow: 0 20px 60px rgba(0,0,0,.55);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1000px 600px at 20% -10%, rgba(124,92,255,.35), transparent 55%),
+        radial-gradient(900px 500px at 90% 0%, rgba(45,226,230,.22), transparent 55%),
+        radial-gradient(900px 900px at 50% 120%, rgba(124,92,255,.18), transparent 60%),
+        linear-gradient(180deg, #050712 0%, #070a15 60%, #050712 100%);
+      overflow-x:hidden;
+    }
+    a{color:inherit}
+    .wrap{max-width:1080px;margin:0 auto;padding:28px 18px 60px}
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:12px 14px;border:1px solid var(--border);border-radius:999px;
+      background:rgba(0,0,0,.25);backdrop-filter: blur(10px);
+      box-shadow: 0 10px 35px rgba(0,0,0,.25);
+    }
+    .brand{
+      display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px;
+    }
+    .logo{
+      width:34px;height:34px;border-radius:10px;
+      background: linear-gradient(135deg, var(--brand), var(--brand2));
+      box-shadow: 0 12px 25px rgba(124,92,255,.25);
+    }
+    .navlinks{display:flex;gap:14px;align-items:center;color:var(--muted);font-size:14px}
+    .navlinks a{opacity:.9;text-decoration:none}
+    .navlinks a:hover{opacity:1;text-decoration:underline}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 12px;border-radius:999px;border:1px solid var(--border);
+      background:rgba(255,255,255,.04); color:var(--muted);
+      font-size:13px;
+    }
+    .dot{width:8px;height:8px;border-radius:999px;background:var(--warn);box-shadow:0 0 0 4px rgba(245,197,66,.12)}
+    .hero{
+      margin-top:22px;
+      display:grid;grid-template-columns: 1.2fr .8fr;gap:18px;
+      align-items:stretch;
+    }
+    @media (max-width: 900px){ .hero{grid-template-columns:1fr} .navlinks{display:none} }
+    .card{
+      border:1px solid var(--border);border-radius:var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .card::before{
+      content:"";position:absolute;inset:-2px;
+      background: radial-gradient(800px 200px at 10% 0%, rgba(124,92,255,.22), transparent 60%),
+                  radial-gradient(700px 220px at 90% 10%, rgba(45,226,230,.18), transparent 60%);
+      pointer-events:none;
+    }
+    .card > *{position:relative}
+    .heroMain{padding:22px 20px 20px}
+    .kicker{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 12px;border-radius:999px;
+      background:rgba(124,92,255,.12);
+      border:1px solid rgba(124,92,255,.25);
+      color:rgba(234,240,255,.9);
+      font-size:13px;font-weight:650;
+    }
+    .h1{
+      margin:12px 0 10px;
+      font-size:40px;line-height:1.05;letter-spacing:-.7px;
+    }
+    @media (max-width: 420px){ .h1{font-size:34px} }
+    .sub{
+      color:var(--muted);
+      font-size:16px;line-height:1.5;margin:0 0 16px;
+      max-width: 58ch;
+    }
+    .ctaRow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:12px 14px;border-radius:14px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.06);
+      text-decoration:none;font-weight:800;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      user-select:none;
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.22)}
+    .btnPrimary{
+      background: linear-gradient(135deg, rgba(124,92,255,.95), rgba(45,226,230,.75));
+      border-color: rgba(124,92,255,.35);
+      color:#061018;
+    }
+    .btnPrimary:hover{background: linear-gradient(135deg, rgba(124,92,255,1), rgba(45,226,230,.85))}
+    .btnIcon{
+      width:30px;height:30px;border-radius:10px;
+      display:inline-grid;place-items:center;
+      background: rgba(0,0,0,.18);
+      border:1px solid rgba(0,0,0,.12);
+    }
+    .small{
+      font-size:13px;color:var(--muted2);line-height:1.35;margin-top:10px
+    }
+    .side{padding:18px}
+    .panel{
+      border:1px solid var(--border);
+      background: rgba(0,0,0,.25);
+      border-radius: 16px;
+      padding:14px;
+    }
+    .statusTop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+    .statusTitle{font-weight:800}
+    .statusBadge{
+      display:inline-flex;align-items:center;gap:8px;
+      font-size:13px;color:var(--muted);
+      padding:8px 10px;border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+    }
+    .statusBadge .dot{background:var(--warn)}
+    .statusMsg{margin:10px 0 0;color:var(--muted);font-size:13.5px;line-height:1.45}
+    .kv{display:grid;grid-template-columns: 1fr;gap:10px;margin-top:12px}
+    .kvItem{
+      padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+    }
+    .kvLabel{font-size:12px;color:var(--muted2);margin-bottom:6px}
+    .kvValue{font-weight:800}
+    .grid3{margin-top:18px;display:grid;grid-template-columns: repeat(3,1fr);gap:12px}
+    @media (max-width: 900px){ .grid3{grid-template-columns:1fr} }
+    .tile{
+      padding:16px;border-radius:18px;border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+    }
+    .tile h3{margin:0 0 8px;font-size:15px}
+    .tile p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.45}
+    .section{
+      margin-top:18px;
+      padding:18px 20px;
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      background: rgba(0,0,0,.18);
+    }
+    .section h2{margin:0 0 12px;font-size:18px}
+    details{
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:14px;
+      padding:12px 12px;
+      background: rgba(255,255,255,.03);
+      margin-top:10px;
+    }
+    summary{cursor:pointer;font-weight:750}
+    details p{margin:10px 0 0;color:var(--muted);font-size:13.5px;line-height:1.45}
+    .footer{
+      margin-top:18px;
+      display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+      color:var(--muted2);font-size:12.5px
+    }
+    code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New";
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 8px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.22);
+      color: rgba(234,240,255,.9);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="nav">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>GrowBiz</div>
+        <span class="pill"><span class="dot"></span><span id="navStatus">Checking status…</span></span>
+      </div>
+
+      <div class="navlinks">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#faq">FAQ</a>
+      </div>
+
+      <span class="pill">Stable entry point • Public access</span>
+    </div>
+
+    <div class="hero">
+      <div class="card">
+        <div class="heroMain">
+          <div class="kicker">Operate smarter • Grow digitally • No tech headaches</div>
+          <div class="h1">Your business command center — websites, documents, leads & automation.</div>
+          <p class="sub">
+            GrowBiz gives businesses tools they actually use: quick documents (invoices/quotes), booking pages,
+            lead inbox + outreach templates, and fast “starter sites” — all without complicated setups.
+          </p>
+
+          <div class="ctaRow">
+            <a id="openBtn" class="btn btnPrimary" href="#">
+              <span class="btnIcon">↗</span>
+              <span>Open GrowBiz App</span>
+            </a>
+
+            <a class="btn" href="#features">
+              <span class="btnIcon">★</span>
+              <span>See features</span>
+            </a>
+
+            <a class="btn" href="#faq">
+              <span class="btnIcon">?</span>
+              <span>Questions</span>
+            </a>
+          </div>
+
+          <div id="statusLine" class="small">Fetching live link…</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="side">
+          <div class="panel">
+            <div class="statusTop">
+              <div>
+                <div class="statusTitle">Live App Status</div>
+                <div class="statusMsg" id="statusMsg">
+                  We’re checking the current live URL. If the server is offline, you’ll see a helpful message here.
+                </div>
+              </div>
+              <div class="statusBadge" id="statusBadge">
+                <span class="dot" id="badgeDot"></span>
+                <span id="badgeText">Checking…</span>
+              </div>
+            </div>
+
+            <div class="kv">
+              <div class="kvItem">
+                <div class="kvLabel">Live URL</div>
+                <div class="kvValue"><code id="liveUrl">loading…</code></div>
+              </div>
+              <div class="kvItem">
+                <div class="kvLabel">Updated</div>
+                <div class="kvValue" id="updatedAt">—</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid3" id="features">
+            <div class="tile">
+              <h3>Instant documents</h3>
+              <p>Invoices, quotations & PDFs generated fast — consistent, branded, downloadable.</p>
+            </div>
+            <div class="tile">
+              <h3>Leads + outreach</h3>
+              <p>Capture leads and use structured follow-up templates so nothing slips.</p>
+            </div>
+            <div class="tile">
+              <h3>Starter websites</h3>
+              <p>Modern themes + catalog + “Order/Book” buttons — generated in minutes.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="how">
+      <h2>How it works</h2>
+      <div class="tile" style="margin-top:10px;">
+        <p>
+          This landing page is always online. When you click <b>Open GrowBiz App</b>, it pulls the latest live
+          server URL from <code>live.json</code> and redirects you.
+          If the server is down, you’ll get a clear status message instead of a broken experience.
+        </p>
+      </div>
+    </div>
+
+    <div class="section" id="faq">
+      <h2>FAQ</h2>
+
+      <details>
+        <summary>Why does the live URL change sometimes?</summary>
+        <p>
+          Early stage hosting uses a tunnel link to your server. If the tunnel restarts, the link may change.
+          This landing page automatically fetches the latest live link.
+        </p>
+      </details>
+
+      <details>
+        <summary>Will my website be accessible to anyone on the internet?</summary>
+        <p>
+          Yes — as long as the server is running and the tunnel is live. If the server goes offline, pages won’t load until it’s back online.
+        </p>
+      </details>
+
+      <details>
+        <summary>Is GrowBiz a replacement for web agencies?</summary>
+        <p>
+          It can be. GrowBiz provides websites + daily business tools, and automates delivery — designed for speed, clarity, and low overhead.
+        </p>
+      </details>
+    </div>
+
+    <div class="footer">
+      <div>© <span id="year"></span> GrowBiz</div>
+      <div>Powered by a stable landing + live tunnel routing</div>
+    </div>
+  </div>
 
   <script>
-        const LIVE_JSON = "https://raw.githubusercontent.com/hudsonactualization-netizen/growbiz-landing/main/live.json";
+    const LIVE_JSON = "https://raw.githubusercontent.com/hudsonactualization-netizen/growbiz-landing/main/live.json"\;
+
+    const openBtn = document.getElementById("openBtn");
+    const statusLine = document.getElementById("statusLine");
+    const statusMsg = document.getElementById("statusMsg");
+    const badgeText = document.getElementById("badgeText");
+    const badgeDot = document.getElementById("badgeDot");
+    const navStatus = document.getElementById("navStatus");
+    const liveUrl = document.getElementById("liveUrl");
+    const updatedAt = document.getElementById("updatedAt");
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    function setBadge(state, text){
+      badgeText.textContent = text;
+      navStatus.textContent = text;
+      if(state === "ok"){
+        badgeDot.style.background = "var(--ok)";
+        badgeDot.style.boxShadow = "0 0 0 4px rgba(46,204,113,.12)";
+      } else if(state === "bad"){
+        badgeDot.style.background = "var(--bad)";
+        badgeDot.style.boxShadow = "0 0 0 4px rgba(255,77,109,.12)";
+      } else {
+        badgeDot.style.background = "var(--warn)";
+        badgeDot.style.boxShadow = "0 0 0 4px rgba(245,197,66,.12)";
+      }
+    }
+
     (async () => {
-      const status = document.getElementById("status");
-      const btn = document.getElementById("openBtn");
       try {
+        setBadge("warn","Checking status…");
+        statusLine.textContent = "Fetching live link…";
         const res = await fetch(LIVE_JSON + "?t=" + Date.now(), { cache: "no-store" });
+        if(!res.ok) throw new Error("Fetch failed: " + res.status);
         const data = await res.json();
-        btn.href = data.tunnel_url;
-        status.textContent = "Live link ready (updated: " + (data.updated_at || "unknown") + ")";
+        if(!data.tunnel_url) throw new Error("Missing tunnel_url in live.json");
+
+        openBtn.href = data.tunnel_url;
+        liveUrl.textContent = data.tunnel_url;
+        updatedAt.textContent = data.updated_at || "—";
+
+        setBadge("ok","Live now");
+        statusLine.textContent = "Live link ready. Click “Open GrowBiz App”.";
+        statusMsg.textContent = "GrowBiz is currently online. If a link ever changes, this page auto-updates.";
       } catch (e) {
-        status.textContent = "GrowBiz is offline or link not ready. Try again later.";
-        btn.href = "/status.html";
+        setBadge("bad","Offline / updating");
+        openBtn.href = "status.html";
+        liveUrl.textContent = "offline";
+        updatedAt.textContent = "—";
+        statusLine.textContent = "GrowBiz is offline or updating. Tap to view status.";
+        statusMsg.textContent = "The app server may be restarting or offline. Try again shortly.";
       }
     })();
   </script>
