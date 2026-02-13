@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GrowBiz</title>
+</head>
+<body style="font-family:system-ui;max-width:720px;margin:40px auto;padding:0 16px;">
+  <h1>GrowBiz</h1>
+  <p>GrowBiz helps businesses operate smarter and grow digitally without technical headaches.</p>
+
+  <p><a id="openBtn" href="#" style="display:inline-block;padding:14px 18px;border:1px solid #111;border-radius:12px;text-decoration:none;font-weight:700;">
+    Open GrowBiz App
+  </a></p>
+  <p id="status" style="opacity:.75;">Fetching live link…</p>
+
+  <script>
+    const LIVE_JSON = "https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/growbiz-landing/main/live.json"\;
+    (async () => {
+      const status = document.getElementById("status");
+      const btn = document.getElementById("openBtn");
+      try {
+        const res = await fetch(LIVE_JSON + "?t=" + Date.now(), { cache: "no-store" });
+        const data = await res.json();
+        btn.href = data.tunnel_url;
+        status.textContent = "Live link ready (updated: " + (data.updated_at || "unknown") + ")";
+      } catch (e) {
+        status.textContent = "GrowBiz is offline or link not ready. Try again later.";
+        btn.href = "/status.html";
+      }
+    })();
+  </script>
+</body>
+</html>
